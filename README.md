@@ -1,4 +1,7 @@
 # COMO CORRER EL PROGRAMA
+Video mostrando funcionamiento 1a entrega: 04/10/2023
+https://youtu.be/yHrHmeBbhvw
+
 Para que el programa funcione correctamente necesita una instalación de MongoDB corriendo en el puerto 27017. Con una db llamada "fcRecog" y las colecciones "estudiantes" y "images". Esto es una solución temporal hasta que la base de datos sea desplegada en un ip publico
 
 Para correr el programa se necesita correr 3 diferentes partes. La primera es el backend:
