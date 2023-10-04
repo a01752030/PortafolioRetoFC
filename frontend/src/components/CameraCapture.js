@@ -23,6 +23,10 @@ function CameraCapture() {
         const imageUrl = canvas.toDataURL('image/jpeg');
         setCapturedImage(imageUrl);
         uploadToServer(imageUrl, imageName);
+        if (videoRef.current.srcObject) {
+            videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+        }
     }
 
     async function uploadToServer(imageData) {
