@@ -1,5 +1,14 @@
 import cv2
 from simple_facerec import SimpleFacerec
+from pymongo import MongoClient
+
+# Initialize the MongoDB connection
+client = MongoClient('localhost', 27017)
+db = client['fcRecog']  # Replace with your database name
+students_collection = db['estudiantes']
+
+# This set will hold the names of students that have been recognized
+recognized_once = set()
 
 # Load Camera
 cap = cv2.VideoCapture(0)
@@ -20,6 +29,12 @@ while True:
         cv2.putText(frame, name, (x1, y1 - 10), cv2.FONT_HERSHEY_DUPLEX, 1, (0, 0, 0), 2)
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 200), 4)
 
+        # Update MongoDB for new recognitions
+        if name not in recognized_once:
+            recognized_once.add(name)
+            # Update the MongoDB database
+            students_collection.update_one({"nombre_del_alumno": name}, {"$inc": {"asistencias": 1}})
+
     cv2.imshow('Frame', frame)
 
     key = cv2.waitKey(1)
@@ -28,3 +43,4 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+client.close()
