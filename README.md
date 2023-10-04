@@ -1,4 +1,5 @@
 # COMO CORRER EL PROGRAMA
+Para que el programa funcione correctamente necesita una instalación de MongoDB corriendo en el puerto 27017. Con una db llamada "fcRecog" y las colecciones "estudiantes" y "images". Esto es una solución temporal hasta que la base de datos sea desplegada en un io
 
 Para correr el programa se necesita correr 3 diferentes partes. La primera es el backend:
 
