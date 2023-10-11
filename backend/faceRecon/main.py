@@ -4,7 +4,7 @@ from pymongo import MongoClient
 
 # Initialize the MongoDB connection
 client = MongoClient('localhost', 27017)
-db = client['fcRecog']  # Replace with your database name
+db = client['fcRecog']  
 students_collection = db['estudiantes']
 
 # This set will hold the names of students that have been recognized

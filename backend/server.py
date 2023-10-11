@@ -66,5 +66,22 @@ def upload_image():
     
     return jsonify(message="Image uploaded successfully"), 200
 
+@app.route('/save_all_images', methods=['POST'])
+def save_all_images_to_db():
+    image_folder_path = 'faceRecon/images'
+    image_files = [f for f in os.listdir(image_folder_path) if os.path.isfile(os.path.join(image_folder_path, f))]
+
+    image_collection = mongo.db.images  
+
+    for image_file in image_files:
+        with open(os.path.join(image_folder_path, image_file), 'rb') as f:
+            image_bytes = f.read()
+
+        image_base64 = base64.b64encode(image_bytes)
+
+        image_collection.insert_one({'image': image_base64})
+
+    return jsonify(message=f"{len(image_files)} images processed and saved to database"), 200
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
