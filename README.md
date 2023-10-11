@@ -1,3 +1,6 @@
+### SEGUNDO ENTREGABLE DE "RETO DATOS":
+Abrir la carpeta de documentación y revisar el archivo "Reto Datos"
+
 # COMO CORRER EL PROGRAMA
 Video mostrando funcionamiento 1a entrega: 04/10/2023
 https://youtu.be/yHrHmeBbhvw
