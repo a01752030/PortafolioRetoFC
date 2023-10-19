@@ -53,13 +53,11 @@ def upload_image():
     estudiantes_collection.insert_one(student)
 
 
-    # Ensure the image_name is safe to use as a filename (avoid directory traversal attacks, invalid characters, etc.)
     image_name = secure_filename(nombre_del_alumno)
 
     image_collection = mongo.db.images
     image_id = image_collection.insert_one({'image': image_bytes}).inserted_id
 
-    # Save the recently uploaded image to the folder
     image_path = os.path.join('faceRecon/images', f'{nombre_del_alumno}.jpeg')
     with open(image_path, 'wb') as f:
         f.write(image_bytes)
