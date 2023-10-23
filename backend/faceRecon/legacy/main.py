@@ -15,7 +15,7 @@ cap = cv2.VideoCapture(0)
 
 # Encode faces from a folder
 sfr = SimpleFacerec()
-sfr.load_encoding_images("images/")
+sfr.load_encoding_images("faces/")
 
 while True:
     ret, frame = cap.read()

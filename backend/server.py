@@ -58,7 +58,7 @@ def upload_image():
     image_collection = mongo.db.images
     image_id = image_collection.insert_one({'image': image_bytes}).inserted_id
 
-    image_path = os.path.join('faceRecon/images', f'{nombre_del_alumno}.jpeg')
+    image_path = os.path.join('faceRecon/faces', f'{nombre_del_alumno}.jpeg')
     with open(image_path, 'wb') as f:
         f.write(image_bytes)
     
@@ -66,7 +66,7 @@ def upload_image():
 
 @app.route('/save_all_images', methods=['POST'])
 def save_all_images_to_db():
-    image_folder_path = 'faceRecon/images'
+    image_folder_path = 'faceRecon/faces'
     image_files = [f for f in os.listdir(image_folder_path) if os.path.isfile(os.path.join(image_folder_path, f))]
 
     image_collection = mongo.db.images  

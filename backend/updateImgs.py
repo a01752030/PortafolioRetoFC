@@ -3,7 +3,7 @@ from bson.objectid import ObjectId
 
 def save_images_to_folder(mongo):
     # Set the folder to save images
-    output_folder = 'faceRecon/images'
+    output_folder = 'faceRecon/faces'
     
     # Ensure the folder to save images exists
     if not os.path.exists(output_folder):
