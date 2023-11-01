@@ -1,3 +1,6 @@
+### Entregable "Momento de Retroalimentación: Reto Documentación":
+Abrir la carpeta de documentación y revisar el archivo "Documentación"
+
 ### SEGUNDO ENTREGABLE DE "RETO DATOS":
 Abrir la carpeta de documentación y revisar el archivo "Reto Datos"
 
