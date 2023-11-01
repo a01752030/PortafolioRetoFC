@@ -1,17 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { CognitoUserPool, CognitoUser } from 'amazon-cognito-identity-js';
+import React from 'react';
 import './App.css';
-import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import UserDashboard from './components/UserDashboard'
-
-const poolData = {
-  UserPoolId: 'us-east-2_I8C2RUTQi', 
-  ClientId: '1vlrj7167oenhjh6a3sgor57ml'
-};
-const userPool = new CognitoUserPool(poolData);
 
 function App() {
+<<<<<<< HEAD
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userGroup, setUserGroup] = useState("");
 
@@ -70,6 +62,13 @@ function App() {
             { isLoggedIn ? renderDashboard() : <Login /> }
         </div>
     );
+=======
+  return (
+    <div className="App">
+      <Dashboard />
+    </div>
+  );
+>>>>>>> parent of 79bf40c (Security, cognito y live feed)
 }
 
 export default App;

@@ -4,8 +4,6 @@ from flask_pymongo import PyMongo
 import base64
 from bson.objectid import ObjectId
 import os
-import subprocess
-from faceRecon.mainVideo  import process_video
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -28,36 +26,6 @@ def get_students():
         del student["image"]  # remove the image data
 
     return jsonify(students)
-
-@app.route('/upload-video', methods=['POST'])
-
-def upload_video():
-    video_file = request.files['video']
-
-    # Ensure the video file is provided
-    if not video_file:
-        return jsonify(message="No video file provided"), 400
-
-    # Generate a secure filename based on the current timestamp (to ensure uniqueness)
-    video_name = secure_filename("MostRecentClass.mp4")
-    video_path = os.path.join('faceRecon/RecentClass', video_name)  # Adjust the directory path as needed
-
-    video_file.save(video_path)
-
-    return jsonify(message="Video uploaded successfully"), 200
-
-@app.route('/run-main-video', methods=['POST'])
-def run_main_video():
-    try:
-        result = process_video()
-
-        # If the script runs successfully
-        if result == "success":
-            return jsonify(message="Script executed successfully"), 200
-        else:
-            return jsonify(message=f"Error: {result}"), 500
-    except Exception as e:
-        return jsonify(message=f"An error occurred: {e}"), 500  
 
 
 @app.route('/upload', methods=['POST'])
