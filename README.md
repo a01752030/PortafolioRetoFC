@@ -1,3 +1,7 @@
+### Entregable "Momento de Retroalimentación: Reto Modelo y Refinamiento":
+Link al video: https://drive.google.com/drive/folders/1utIBn00rc0PGFseUiAWvjeHtBcSP_lIA
+De igual manera la presentación se encuentra en la carpeta documentación bajo el nombre "Presentación Modelo y Refinamiento.pdf"
+
 ### Entregable "Momento de Retroalimentación: Reto Documentación":
 Abrir la carpeta de documentación y revisar el archivo "Documentación"
 
