@@ -1,7 +1,6 @@
-from ultralytics import YOLO
 import os
-import cv2
 import face_recognition
+import cv2
 from pymongo import MongoClient
 
 def process_video():
@@ -40,9 +39,6 @@ def process_video():
             if True in matches:
                 first_match_index = matches.index(True)
                 name = known_face_labels[first_match_index]
-            cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-            font = cv2.FONT_HERSHEY_DUPLEX
-            cv2.putText(frame, name, (left + 6, bottom - 6), font, 0.5, (255, 255, 255), 1)
             if name not in recognized_once:
                 recognized_once.add(name)
                 students_collection.update_one({"nombre_del_alumno": name}, {"$inc": {"asistencias": 1}})
@@ -56,13 +52,9 @@ def process_video():
         ret, frame = cap.read()
         if not ret:
             break
-        frame_with_faces = recognize_faces(frame)
-        cv2.imshow('Face Recognition', frame_with_faces)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+        recognize_faces(frame)
 
     cap.release()
-    cv2.destroyAllWindows()
 
     try:
         os.remove(video_path)

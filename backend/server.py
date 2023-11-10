@@ -7,12 +7,14 @@ import os
 import subprocess
 from faceRecon.mainVideo  import process_video
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
 
+load_dotenv()  
 app = Flask(__name__)
 CORS(app)
 
 # Configure MongoDB
-app.config["MONGO_URI"] = "mongodb://localhost:27017/fcRecog"
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 mongo = PyMongo(app)
 
 
@@ -58,6 +60,22 @@ def run_main_video():
             return jsonify(message=f"Error: {result}"), 500
     except Exception as e:
         return jsonify(message=f"An error occurred: {e}"), 500  
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    # Check email and password and return the corresponding component
+    if email == 'langheran@gmail.com' and password == 'Nds1!' or email == 'sickpuppyjp500@gmail.com' and password == 'ElPaco!':
+        return jsonify({'component': 'FirstComponent'})
+    elif email == 'nhurst@ndscognitivelabs.com' and password == 'Nds2!' or email == 'deathpuppyjp500@gmail.com' and password == 'ElAlfredo!':
+        return jsonify({'component': 'SecondComponent'})
+    elif email == 'kzazueta@ndscognitivelabs.com' and password == 'Nds3!'or email == 'healthypuppy500@gmail.com' and password == 'ElTupac!':
+        return jsonify({'component': 'ThirdComponent'})
+    else:
+        return jsonify({'component': 'InvalidLogin'})
 
 
 @app.route('/upload', methods=['POST'])

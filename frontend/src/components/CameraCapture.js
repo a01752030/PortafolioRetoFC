@@ -44,7 +44,7 @@ function CameraCapture() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(studentData)
             });
-
+            
             const result = await response.json();
             console.log(result.message);
         } catch (error) {
