@@ -44,7 +44,7 @@ function VideoCapture() {
             const formData = new FormData();
             formData.append('video', videoBlob);
             
-            const response = await fetch('https://4121-189-160-131-76.ngrok.io/upload-video', {
+            const response = await fetch('https://4fdf-189-160-131-76.ngrok.io/upload-video', {
                 method: 'POST',
                 body: formData
             });
@@ -59,7 +59,7 @@ function VideoCapture() {
         setLoading(true);  // Start loading
         setNotification('Procesando su video...');  // Show loading message
         try {
-            const response = await fetch('https://4121-189-160-131-76.ngrok.io/run-main-video', {
+            const response = await fetch('https://4fdf-189-160-131-76.ngrok.io/run-main-video', {
                 method: 'POST'
             });
 

@@ -39,7 +39,7 @@ function CameraCapture() {
                 clase: clase
             };
             
-            const response = await fetch('http://localhost:5000/upload', {
+            const response = await fetch('https://4fdf-189-160-131-76.ngrok.io/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(studentData)

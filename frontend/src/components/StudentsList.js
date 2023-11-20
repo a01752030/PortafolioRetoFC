@@ -5,7 +5,7 @@ function StudentsList() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('https://4121-189-160-131-76.ngrok.io/get-students')
+        fetch('https://4fdf-189-160-131-76.ngrok.io/get-students')
             .then(response => response.json())
             .then(data => {
                 setStudents(data);
