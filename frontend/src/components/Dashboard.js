@@ -7,6 +7,7 @@ import Page3 from './Page3';
 import HomePage from './HomePage';
 import AccesoDenegado from './AccesoDenegado';
 import VideoCapture from './VideoCapture';
+//import '../App.css';
 
 const Dashboard = ({ userComponent }) => {
   // Check the userComponent prop and render the appropriate content
