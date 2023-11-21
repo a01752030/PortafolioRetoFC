@@ -1,0 +1,11 @@
+/* Dashboard.module.css */
+
+.dashboardContainer {
+    display: flex;
+  }
+  
+  .dashboardContent {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #eee;
+  }

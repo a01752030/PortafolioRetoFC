@@ -5,7 +5,6 @@ const Page2 = () => {
 
     const handleImageCapture = (imageUrl) => {
         console.log("Captured Image:", imageUrl);
-        // Here, you can handle the captured image further if needed
     };
     return (
         <div>

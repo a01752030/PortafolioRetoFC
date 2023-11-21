@@ -1,3 +1,4 @@
+// Dashboard.js
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -7,66 +8,65 @@ import Page3 from './Page3';
 import HomePage from './HomePage';
 import AccesoDenegado from './AccesoDenegado';
 import VideoCapture from './VideoCapture';
-//import '../App.css';
+import styles from '../styles/dashboard.module.css';
 
 const Dashboard = ({ userComponent }) => {
   // Check the userComponent prop and render the appropriate content
   const renderContent = () => {
     if (userComponent === 'FirstComponent') {
       return (
-        <div className="dashboard">
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/page1" element={<Page1 />} />
-          <Route path="/page2" element={<Page2 />} />
-          <Route path="/page3" element={<Page3 />} />
-          <Route path="/page4" element={<VideoCapture />} />
-        </Routes>
+        <div className={styles.dashboardContainer}>
+          <Sidebar />
+          <div className={styles.dashboardContent}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/page1" element={<Page1 />} />
+              <Route path="/page2" element={<Page2 />} />
+              <Route path="/page3" element={<Page3 />} />
+              <Route path="/page4" element={<VideoCapture />} />
+            </Routes>
+          </div>
         </div>
       );
-    
-
     } else if (userComponent === 'SecondComponent') {
       return (
-        <div className="dashboard">
-        <Sidebar />
-        <Routes>
-        <Route path="/" element={<HomePage />} />
-          <Route path="/page1" element={<Page1 />} />
-          <Route path="/page2" element={<AccesoDenegado />} />
-          <Route path="/page3" element={<Page3 />} />
-          <Route path="/page4" element={<VideoCapture />} />
-        </Routes>
+        <div className={styles.dashboardContainer}>
+          <Sidebar />
+          <div className={styles.dashboardContent}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/page1" element={<Page1 />} />
+              <Route path="/page2" element={<AccesoDenegado />} />
+              <Route path="/page3" element={<Page3 />} />
+              <Route path="/page4" element={<VideoCapture />} />
+            </Routes>
+          </div>
         </div>
-
       );
     } else if (userComponent === 'ThirdComponent') {
-      // Default case when userComponent doesn't match the first two
       return (
-        <div className="dashboard">
-        <Sidebar />
-        <Routes>
-        <Route path="/" element={<HomePage />} />
-          <Route path="/page1" element={<Page1 />} />
-          <Route path="/page2" element={<Page2 />} />
-          <Route path="/page3" element={<Page3 />} />
-          <Route path="/page4" element={<AccesoDenegado />} />
-        </Routes>
+        <div className={styles.dashboardContainer}>
+          <Sidebar />
+          <div className={styles.dashboardContent}>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/page1" element={<Page1 />} />
+              <Route path="/page2" element={<Page2 />} />
+              <Route path="/page3" element={<Page3 />} />
+              <Route path="/page4" element={<AccesoDenegado />} />
+            </Routes>
+          </div>
         </div>
       );
-    }
-    else{
-
-        return <div>Contraseña o usuario no valido</div>;
-
+    } else {
+      return <div>Contraseña o usuario no valido</div>;
     }
   };
 
   return (
     <Router>
-      <div className="dashboard">
-        <div className="content">{renderContent()}</div>
+      <div className={styles.dashboardContainer}>
+        <div className={styles.dashboardContent}>{renderContent()}</div>
       </div>
     </Router>
   );

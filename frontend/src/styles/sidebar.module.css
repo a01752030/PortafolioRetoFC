@@ -1,0 +1,24 @@
+/* Sidebar.module.css */
+
+.sidebarContainer {
+    width: 200px;
+    height: 100vh;
+    background-color: #333;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .sidebarButton {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: white;
+    background-color: #555;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .sidebarButton:hover {
+    background-color: #777;
+  }

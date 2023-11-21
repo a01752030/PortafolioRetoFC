@@ -9,6 +9,7 @@ function CameraCapture() {
     const [fechaDeRegistro, setFechaDeRegistro] = useState("");
     const [clase, setClase] = useState("");
 
+
     async function startCamera() {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = stream;
@@ -39,7 +40,7 @@ function CameraCapture() {
                 clase: clase
             };
             
-            const response = await fetch('https://4fdf-189-160-131-76.ngrok.io/upload', {
+            const response = await fetch('https://1f9e-201-162-233-114.ngrok.io/upload', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(studentData)
