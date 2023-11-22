@@ -1,0 +1,85 @@
+/* CameraCapture.module.css */
+
+.cameraContainer {
+    display: flex;
+}
+
+.formContainer {
+    flex: 1;
+    padding: 20px;
+}
+
+.videoContainer {
+    flex: 1;
+    padding: 20px;
+    position: relative;
+}
+
+video,
+.placeholder {
+    width: 200px;
+    height: 150px;
+    background-color: transparent;
+    border: 10px solid #555; /* Set the border thickness and color for the square */
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 5px; 
+}
+
+button {
+    margin-top: 10px; /* Add some space between buttons */
+    color: #fff; 
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #555;
+    cursor: pointer;
+    border-radius: 5px; 
+}
+
+.startCameraButton {
+    padding: 10px 15px; /* Larger padding for the "Comenzar camara" button */
+    font-weight: bold; /* Make it bold for emphasis */
+    font-size: 16px; /* Increase font size for emphasis */
+}
+.videoWrapper {
+    position: relative;
+}
+
+.buttonWrapper {
+    margin-top: 170px; /* Add space between the video wrapper and the button */
+    margin-left: 20px; 
+}
+
+/* Style for form labels */
+.label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    display: block;
+}
+
+/* Style for form inputs */
+.inputField {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Style for the submit button */
+.captureButton {
+    margin-top: 10px;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #555;
+    border: none;
+    border-radius: 5px;
+}
+
+.disabledButton {
+    background-color: #888;
+    cursor: not-allowed;
+}

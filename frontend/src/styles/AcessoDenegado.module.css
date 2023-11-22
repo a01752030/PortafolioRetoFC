@@ -1,17 +1,6 @@
-/* Dashboard.module.css */
+/* AccesoDenegado.module.css */
 
-.dashboardContainer {
-    display: flex;
-    background-color: rgb(113, 91, 91);
-    background: url('../resources/bg2.gif');
-    background-size: cover; 
-  }
-  
-  .dashboardContent {
-    flex-grow: 1;
-    padding: 20px;
-  }
-  .accesoDenegadoContainer {
+.accesoDenegadoContainer {
     display: flex;
     align-items: center;
     justify-content: center;

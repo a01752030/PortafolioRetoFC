@@ -11,6 +11,7 @@
     width: 300px;
     padding: 20px;
     border: 1px solid #343e48;
+    background-color: #ccc;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }

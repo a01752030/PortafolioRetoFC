@@ -8,6 +8,8 @@ import Page3 from './Page3';
 import HomePage from './HomePage';
 import AccesoDenegado from './AccesoDenegado';
 import VideoCapture from './VideoCapture';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/dashboard.module.css';
 
 const Dashboard = ({ userComponent }) => {
@@ -59,7 +61,13 @@ const Dashboard = ({ userComponent }) => {
         </div>
       );
     } else {
-      return <div>Contraseña o usuario no valido</div>;
+      return (
+        <div className={styles.accesoDenegadoContainer}>
+            <FontAwesomeIcon icon={faExclamationTriangle} className={styles.icon} />
+            <p className={styles.message}>Acceso Denegado</p>
+            <p>Contraseña o correo incorrecto. Favor de recargar la pagina para tratar otra vez</p>
+        </div>
+    );
     }
   };
 

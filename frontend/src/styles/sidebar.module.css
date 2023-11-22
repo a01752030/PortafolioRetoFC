@@ -1,4 +1,7 @@
 /* Sidebar.module.css */
+body {
+  margin: 0;
+}
 
 .sidebarContainer {
     width: 200px;

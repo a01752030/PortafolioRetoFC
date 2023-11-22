@@ -12,7 +12,7 @@ function StudentsList() {
   const [filteredStudents, setFilteredStudents] = useState([]);
 
   useEffect(() => {
-    fetch('https://1f9e-201-162-233-114.ngrok.io/get-students')
+    fetch('http://localhost:5000/get-students')
       .then((response) => response.json())
       .then((data) => {
         setStudents(data);

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 import base64
@@ -6,6 +6,8 @@ import os
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from faceRecon.mainVideo import process_video
+from faceRecon.process_participations import delayed_success
+
 
 load_dotenv()
 app = Flask(__name__)
@@ -44,7 +46,9 @@ def upload_video():
 
         video_file.save(video_path)
 
-        response = jsonify(message="Video uploaded successfully"), 200
+        response = jsonify(message="Video uploaded successfully")
+        print("Video cool")
+        response.status_code = 200
 
     # Set CORS headers
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -53,52 +57,98 @@ def upload_video():
 
     return response
 
-@app.route('/run-main-video', methods=['POST', 'OPTIONS'])
+@app.route('/upload-parti', methods=['POST', 'OPTIONS'])
+def upload_parti():
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'CORS preflight request successful'})
+    else:
+        video_file = request.files['video']
+
+        # Ensure the video file is provided
+        if not video_file:
+            return jsonify(message="No video file provided"), 400
+
+        # Generate a secure filename based on the current timestamp (to ensure uniqueness)
+        video_name = secure_filename("MostRecentParti.mp4")
+        video_path = os.path.join('faceRecon/RecentParti', video_name)  # Adjust the directory path as needed
+
+        video_file.save(video_path)
+
+        response = jsonify(message="Video uploaded successfully")
+        response.status_code = 200
+
+    # Set CORS headers
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+
+    return response
+
+
+@app.route('/run-main-video', methods=['GET'])
 def run_main_video():
-    if request.method == 'OPTIONS':
-        response = jsonify({'message': 'CORS preflight request successful'})
-    else:
-        try:
-            result = process_video()
+    try:
+        result = process_video()
 
-            # If the script runs successfully
-            if result == "success":
-                response = jsonify(message="Script executed successfully"), 200
-            else:
-                response = jsonify(message=f"Error: {result}"), 500
-        except Exception as e:
-            response = jsonify(message=f"An error occurred: {e}"), 500
+        # If the script runs successfully
+        if result == "success":
+            response = make_response(jsonify({'message': 'Script executed successfully'}))
+            response.status_code = 200
+        else:
+            response = make_response(jsonify({'message': f'Error: {result}'}))
+            response.status_code = 500
+    except Exception as e:
+        response = make_response(jsonify({'message': f'An error occurred: {e}'}))
+        response.status_code = 500
 
     # Set CORS headers
     response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    response.headers.add('Access-Control-Allow-Methods', 'GET')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 
     return response
 
-@app.route('/login', methods=['POST', 'OPTIONS'])
+@app.route('/run-partici-video', methods=['GET'])
+def run_partici_video():
+    try:
+        result = delayed_success()
+
+        # If the script runs successfully
+        if result == "success":
+            response = make_response(jsonify({'message': 'Script executed successfully'}))
+            response.status_code = 200
+        else:
+            response = make_response(jsonify({'message': f'Error: {result}'}))
+            response.status_code = 500
+    except Exception as e:
+        response = make_response(jsonify({'message': f'An error occurred: {e}'}))
+        response.status_code = 500
+
+    # Set CORS headers
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'GET')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+
+    return response
+
+
+
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'OPTIONS':
-        response = jsonify({'message': 'CORS preflight request successful'})
-    else:
-        data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
 
         # Check email and password and return the corresponding component
-        if email == 'langheran@gmail.com' and password == 'Nds1!' or email == 'sickpuppyjp500@gmail.com' and password == 'ElPaco!':
-            response = jsonify({'component': 'FirstComponent'})
-        elif email == 'nhurst@ndscognitivelabs.com' and password == 'Nds2!' or email == 'deathpuppyjp500@gmail.com' and password == 'ElAlfredo!':
-            response = jsonify({'component': 'SecondComponent'})
-        elif email == 'kzazueta@ndscognitivelabs.com' and password == 'Nds3!' or email == 'healthypuppy500@gmail.com' and password == 'ElTupac!':
-            response = jsonify({'component': 'ThirdComponent'})
-        else:
-            response = jsonify({'component': 'InvalidLogin'})
+    if email == 'langheran@gmail.com' and password == 'Nds1!' or email == 'sickpuppyjp500@gmail.com' and password == 'ElPaco!':
+        response = jsonify({'component': 'FirstComponent'})
+    elif email == 'nhurst@ndscognitivelabs.com' and password == 'Nds2!' or email == 'deathpuppyjp500@gmail.com' and password == 'ElAlfredo!':
+        response = jsonify({'component': 'SecondComponent'})
+    elif email == 'kzazueta@ndscognitivelabs.com' and password == 'Nds3!' or email == 'healthypuppy500@gmail.com' and password == 'ElTupac!':
+        response = jsonify({'component': 'ThirdComponent'})
+    else:
+        response = jsonify({'component': 'InvalidLogin'})
 
-    # Set CORS headers
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 
     return response
 
