@@ -153,13 +153,13 @@ function VideoCapture() {
                     Comenzar camara
                 </button>
                 <button className={styles.button} onClick={() => startRecording('main')}>
-                    Empezar a grabar la clase
+                    Empezar grabación de asistencia
+                </button>
+                <button className={styles.button} onClick={stopRecording}>
+                    Empezar grabación de clase
                 </button>
                 <button className={styles.button} onClick={stopRecording}>
                     Terminar la clase
-                </button>
-                <button className={styles.button} onClick={stopRecording}>
-                    Actualizar base de datos
                 </button>
                 <p className={styles.notification}>{notification}</p>
             </div>

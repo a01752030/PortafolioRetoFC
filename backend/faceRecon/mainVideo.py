@@ -2,6 +2,7 @@ import os
 import face_recognition
 import cv2
 from pymongo import MongoClient
+import time
 
 def process_video():
     client = MongoClient('localhost', 27017)
@@ -30,7 +31,7 @@ def process_video():
             known_face_labels.append(label)
 
     # Function to recognize faces in the frame
-    def recognize_faces(frame):
+    def recognize_faces(frame, known_face_encodings, known_face_labels, recognized_names):
         face_locations = face_recognition.face_locations(frame)
         face_encodings = face_recognition.face_encodings(frame, face_locations)
         for (top, right, bottom, left), face_encoding in zip(face_locations, face_encodings):
@@ -39,26 +40,39 @@ def process_video():
             if True in matches:
                 first_match_index = matches.index(True)
                 name = known_face_labels[first_match_index]
-            if name not in recognized_once:
-                recognized_once.add(name)
+            if name not in recognized_names:
+                recognized_names.add(name)
                 students_collection.update_one({"nombre_del_alumno": name}, {"$inc": {"asistencias": 1}})
-        return frame
+        return recognized_names
 
     # Initialize the video capture object
     video_path = './faceRecon/RecentClass/MostRecentClass.mp4'
     cap = cv2.VideoCapture(video_path)
 
+    frame_count = 0
+    batch_size = 10  
+    recognized_names = set()
+
+    start_time = time.time()
+
     while True:
         ret, frame = cap.read()
         if not ret:
             break
-        recognize_faces(frame)
+
+        frame_count += 1
+        if frame_count % batch_size == 0:
+            recognized_names = recognize_faces(frame, known_face_encodings, known_face_labels, recognized_names)
 
     cap.release()
+
+    end_time = time.time()
+    elapsed_time = end_time - start_time
 
     try:
         os.remove(video_path)
         print(f"Video '{video_path}' has been deleted successfully.")
+        print(f"Script execution time: {elapsed_time:.2f} seconds")
         return "success"
     except Exception as e:
         print(f"Error deleting video '{video_path}': {e}")

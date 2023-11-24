@@ -14,8 +14,8 @@ const Login = ({ onLogin }) => {
   return (
     <div className={styles.loginContainer}>
       <form className={styles.loginForm} onSubmit={handleSubmit}>
-        <h2 className={styles.loginTitle}>Bienvendi@</h2>
-        <p>***Sistema de asistencia y participación***</p>
+        <h2 className={styles.loginTitle}>Bienvenid@</h2>
+        <p>Sistema de asistencia y participación</p>
         <label className={styles.loginLabel}>
           Email:
           <input

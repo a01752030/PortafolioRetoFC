@@ -1,11 +1,19 @@
 // App.js
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    document.title = 'Asistencia y participacion';
+    const link = document.querySelector("link[rel~='icon']") || document.createElement('link');
+    link.rel = 'icon';
+    link.href = './resources/logo_icon.png';
+    document.head.appendChild(link);
+  }, []);
+
   const [userComponent, setUserComponent] = useState(null);
 
   const handleLogin = async (email, password) => {

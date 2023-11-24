@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from flask_pymongo import PyMongo
+import matplotlib.pyplot as plt
+import io
 import base64
 import os
 from werkzeug.utils import secure_filename
@@ -16,6 +18,34 @@ CORS(app, origins='*')
 # Configure MongoDB
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 mongo = PyMongo(app)
+
+plt.ioff()
+@app.route('/data',methods=['GET'])
+def data():
+    # Generate chart data (replace this with your data processing logic)
+    data = {'labels': ['Class A', 'Class B', 'Class C'],
+            'datasets': [{'label': 'Total Participations',
+                           'data': [20, 35, 15],
+                           'backgroundColor': ['rgba(75, 192, 192, 0.2)',
+                                                'rgba(255, 99, 132, 0.2)',
+                                                'rgba(255, 205, 86, 0.2)']}]}
+    
+    # Generate chart image
+    fig, ax = plt.subplots()
+    ax.bar(data['labels'], data['datasets'][0]['data'])
+    plt.title('Total Participations by Class')
+    plt.xlabel('Class')
+    plt.ylabel('Total Participations')
+
+    # Convert chart to base64 image
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    img_base64 = base64.b64encode(img.getvalue()).decode()
+
+    plt.close()
+
+    return jsonify({'chartData': data, 'chartImage': img_base64})
 
 @app.route('/get-students', methods=['GET'])
 def get_students():
