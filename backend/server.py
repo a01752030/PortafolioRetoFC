@@ -1,54 +1,138 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response,send_file
 from flask_cors import CORS
 from flask_pymongo import PyMongo
-import matplotlib.pyplot as plt
-import io
 import base64
 import os
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from faceRecon.mainVideo import process_video
 from faceRecon.process_participations import delayed_success
+import json
+from graphs import generate_heatmap,generate_bubble_chart,generate_pie_chart,generate_class_specific_bar_chart,generate_class_participation_box_plot, generate_student_ranking_bar_graph, generate_student_attendance_bar_chart
 
 
 load_dotenv()
 app = Flask(__name__)
 CORS(app, origins='*')
 
+with open("random_graph.json", "r") as json_file:
+    graph_data = json.load(json_file)
+
+
 # Configure MongoDB
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 mongo = PyMongo(app)
 
-plt.ioff()
-@app.route('/data',methods=['GET'])
-def data():
-    # Generate chart data (replace this with your data processing logic)
-    data = {'labels': ['Class A', 'Class B', 'Class C'],
-            'datasets': [{'label': 'Total Participations',
-                           'data': [20, 35, 15],
-                           'backgroundColor': ['rgba(75, 192, 192, 0.2)',
-                                                'rgba(255, 99, 132, 0.2)',
-                                                'rgba(255, 205, 86, 0.2)']}]}
+
+@app.route('/generate_heatmap', methods=['GET'])
+def generate_heatmap_route():
+    try:
+        _, image_stream = generate_heatmap()
+        print(image_stream)
+        image_stream.seek(0)
+
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
+
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/generate_bubble_chart', methods=['GET'])
+def generate_bubble_chart_route():
+    try:
+        _, image_stream = generate_bubble_chart()
+        image_stream.seek(0)
+
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
+
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
     
-    # Generate chart image
-    fig, ax = plt.subplots()
-    ax.bar(data['labels'], data['datasets'][0]['data'])
-    plt.title('Total Participations by Class')
-    plt.xlabel('Class')
-    plt.ylabel('Total Participations')
+@app.route('/generate_pie_chart', methods=['GET'])
+def generate_pie_chart_route():
+    try:
+        _, image_stream = generate_pie_chart()
+        image_stream.seek(0)
 
-    # Convert chart to base64 image
-    img = io.BytesIO()
-    plt.savefig(img, format='png')
-    img.seek(0)
-    img_base64 = base64.b64encode(img.getvalue()).decode()
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
 
-    plt.close()
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
-    return jsonify({'chartData': data, 'chartImage': img_base64})
+@app.route('/generate_class_specific_bar_chart', methods=['POST'])
+def generate_class_specific_bar_chart_route():
+    try:
+        class_name = request.json.get('className')
+        _, image_stream = generate_class_specific_bar_chart(class_name)
+        image_stream.seek(0)
+
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
+
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@app.route('/generate_class_participation_box_plot', methods=['POST'])
+def generate_class_participation_box_plot_route():
+    try:
+        class_name = request.json.get('className')
+        _, image_stream = generate_class_participation_box_plot(class_name)
+        image_stream.seek(0)
+
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
+
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/generate_student_attendance_bar_chart', methods=['POST'])
+def generate_student_attendance_bar_chart_route():
+    try:
+        class_name = request.json.get('className')
+        _, image_stream = generate_student_attendance_bar_chart(class_name)
+        image_stream.seek(0)
+
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
+
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/generate_student_ranking_bar_graph', methods=['POST'])
+def generate_student_ranking_bar_graph_route():
+    try:
+        class_name = request.json.get('className')
+        _, image_stream = generate_student_ranking_bar_graph(class_name)
+        image_stream.seek(0)
+
+        # Convert the image stream to base64 encoding
+        image_data = base64.b64encode(image_stream.read()).decode('utf-8')
+
+        return image_data
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    
+@app.route('/delete_graph_image', methods=['DELETE'])
+def delete_graph_image_route():
+    image_path = 'graph_image.png'
+    try:
+        os.remove(image_path)
+        return jsonify({'message': 'Image deleted successfully'})
+    except Exception as e:
+        return jsonify({'error': f'Error deleting image: {e}'}), 500
+
 
 @app.route('/get-students', methods=['GET'])
-def get_students():
+def get_students_route():
     estudiantes_collection = mongo.db.estudiantes
     students = list(estudiantes_collection.find({}))
 
@@ -60,7 +144,7 @@ def get_students():
     return jsonify(students)
 
 @app.route('/upload-video', methods=['POST', 'OPTIONS'])
-def upload_video():
+def upload_video_route():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'CORS preflight request successful'})
     else:
@@ -88,7 +172,7 @@ def upload_video():
     return response
 
 @app.route('/upload-parti', methods=['POST', 'OPTIONS'])
-def upload_parti():
+def upload_parti_route():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'CORS preflight request successful'})
     else:
@@ -116,7 +200,7 @@ def upload_parti():
 
 
 @app.route('/run-main-video', methods=['GET'])
-def run_main_video():
+def run_main_video_route():
     try:
         result = process_video()
 
@@ -139,7 +223,7 @@ def run_main_video():
     return response
 
 @app.route('/run-partici-video', methods=['GET'])
-def run_partici_video():
+def run_partici_video_route():
     try:
         result = delayed_success()
 
@@ -162,9 +246,8 @@ def run_partici_video():
     return response
 
 
-
 @app.route('/login', methods=['POST'])
-def login():
+def login_route():
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -183,7 +266,7 @@ def login():
     return response
 
 @app.route('/upload', methods=['POST', 'OPTIONS'])
-def upload_image():
+def upload_image_route():
     if request.method == 'OPTIONS':
         response = {'message': 'CORS preflight request successful'}
     else:
@@ -228,7 +311,7 @@ def upload_image():
 
 
 @app.route('/save_all_images', methods=['POST', 'OPTIONS'])
-def save_all_images_to_db():
+def save_all_images_to_db_route():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'CORS preflight request successful'})
     else:

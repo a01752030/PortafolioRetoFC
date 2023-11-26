@@ -1,0 +1,72 @@
+/* Page3.module.css */
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+.searchContainer {
+    flex: 0 0 48%;
+    margin-bottom: 20px;
+  }
+  
+.leftSearchContainer {
+    float: left;
+    margin-right: 20px;
+  }
+  
+.rightSearchContainer {
+    float: right;
+    margin-left: 20px;
+  }
+  
+.imageContainer {
+    flex: 0 0 48%; 
+    margin-bottom: 20px; /* Add margin at the bottom for better separation */
+  }
+  
+  .leftImageContainer,
+  .rightImageContainer,
+  .centeredImageContainer {
+    overflow: hidden; /* Ensure the rounded corners are visible */
+  }
+  
+  .leftImageContainer {
+    float: left;
+    margin-right: 20px;
+  }
+  
+  .rightImageContainer {
+    float: right;
+    margin-left: 20px;
+  }
+  
+  .centeredImageContainer {
+    flex: 0 0 100%; 
+    text-align: center;
+    margin-left: 24px; 
+  }
+  
+  .image {
+    width: 425px; /* Set the desired width */
+    height: auto;
+    border-radius: 10px; /* Set the border-radius for smooth edges */
+    border: 5px solid #555; /* Set the border color and width */
+  }
+
+  .imageStCl {
+    width: 400px; /* Set the desired width */
+    height: auto;
+    border-radius: 10px; /* Set the border-radius for smooth edges */
+    border: 5px solid #555; /* Set the border color and width */
+  } 
+  .imageStCl2 {
+    width: 400px; /* Set the desired width */
+    height: auto;
+    border-radius: 10px; /* Set the border-radius for smooth edges */
+    border: 5px solid #555; /* Set the border color and width */
+    margin-left: 150px; 
+  }   
+  .centeredTitle {
+    text-align: center;
+  }
