@@ -9,6 +9,9 @@ https://youtu.be/yHrHmeBbhvw
 * Video explicativo de los modelos (09/11/2023):
 https://drive.google.com/file/d/17LIJGcTB8zubjh3uXTO4JRQ59mKUDckm/view?usp=sharing
 
+* Video demostrativo de los modelos (27/11/2023):
+https://www.youtube.com/watch?v=KksBgrYOuJg 
+
 # COMO CORRER EL PROGRAMA DESDE LA NUBE
 * Asegurar que el backend este desplegado en la computadora servidor (Juan Pablo Castañeda Serrano)
 * Entrar a  "https://main.dg4xf9dmaefhh.amplifyapp.com/"
