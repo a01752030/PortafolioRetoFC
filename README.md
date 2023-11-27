@@ -1,3 +1,8 @@
+### Liga a la página ya desplegada en aws-amplify con funcionalidad completa
+https://main.dg4xf9dmaefhh.amplifyapp.com/
+
+
+
 ### Entregable "Momento de Retroalimentación: Reto Modelo y Refinamiento":
 Link al video: https://drive.google.com/drive/folders/1utIBn00rc0PGFseUiAWvjeHtBcSP_lIA
 
