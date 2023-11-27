@@ -18,7 +18,7 @@ function App() {
 
   const handleLogin = async (email, password) => {
     try {
-      const response = await fetch('http://localhost:5000/login', {
+      const response = await fetch('https://a2dc-200-39-29-132.ngrok.io/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

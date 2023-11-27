@@ -27,10 +27,11 @@ def generate_heatmap_route():
 
         # Convert the image stream to base64 encoding
         image_data = base64.b64encode(image_stream.read()).decode('utf-8')
-
         return image_data
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
 
 @app.route('/generate_bubble_chart', methods=['GET'])
 def generate_bubble_chart_route():
@@ -268,21 +269,28 @@ def run_parti_video_route():
 
     return response
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST','OPTIONS'])
 def login_route():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'CORS preflight request successful'})
+    else:
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
 
         # Check email and password and return the corresponding component
-    if email == 'langheran@gmail.com' and password == 'Nds1!' or email == 'sickpuppyjp500@gmail.com' and password == 'ElPaco!':
-        response = jsonify({'component': 'FirstComponent'})
-    elif email == 'nhurst@ndscognitivelabs.com' and password == 'Nds2!' or email == 'deathpuppyjp500@gmail.com' and password == 'ElAlfredo!':
-        response = jsonify({'component': 'SecondComponent'})
-    elif email == 'kzazueta@ndscognitivelabs.com' and password == 'Nds3!' or email == 'healthypuppy500@gmail.com' and password == 'ElTupac!':
-        response = jsonify({'component': 'ThirdComponent'})
-    else:
-        response = jsonify({'component': 'InvalidLogin'})
+        if email == 'langheran@gmail.com' and password == 'Nds1!' or email == 'sickpuppyjp500@gmail.com' and password == 'ElPaco!':
+            response = jsonify({'component': 'FirstComponent'})
+        elif email == 'nhurst@ndscognitivelabs.com' and password == 'Nds2!' or email == 'deathpuppyjp500@gmail.com' and password == 'ElAlfredo!':
+            response = jsonify({'component': 'SecondComponent'})
+        elif email == 'kzazueta@ndscognitivelabs.com' and password == 'Nds3!' or email == 'healthypuppy500@gmail.com' and password == 'ElTupac!':
+            response = jsonify({'component': 'ThirdComponent'})
+        else:
+            response = jsonify({'component': 'InvalidLogin'})
+    # Set CORS headers
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 
 
     return response
