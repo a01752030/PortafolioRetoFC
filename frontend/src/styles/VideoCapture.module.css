@@ -43,6 +43,38 @@
     border-radius: 5px;
   }
   
+  .notification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+  }
+  
   .notification {
+    padding: 10px;
     margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .notification-before {
+    background-color: #808080; /* Gray */
+    color: white;
+  }
+  
+  .notification-success {
+    background-color: #4CAF50; /* Green */
+    color: white;
+  }
+  
+  .notification-fail {
+    background-color: #555; /* Red */
+    color: white;
   }

@@ -154,15 +154,15 @@ def upload_video_route():
 
         video_file.save(video_path)
 
-        response = jsonify(message="Video uploaded successfully")
         print("Video cool")
         try:
             result = process_video()
 
         # If the script runs successfully
             if result == "success":
-                response = make_response(jsonify({'message': 'Script executed successfully'}))
+                response = jsonify(message="Asistencia actualizada")
                 response.status_code = 200
+                return response
             else:
                 response = make_response(jsonify({'message': f'Error: {result}'}))
                 response.status_code = 500
@@ -197,15 +197,15 @@ def upload_parti_route():
 
         video_file.save(video_path)
 
-        response = jsonify(message="Video uploaded successfully")
         print("Video ok")        
         try:
             result = process_video_and_detect_faces()
 
         # If the script runs successfully
             if result == "success":
-                response = make_response(jsonify({'message': 'Script executed successfully'}))
+                response = jsonify(message="Participaciones actualizadas")
                 response.status_code = 200
+                return response
             else:
                 response = make_response(jsonify({'message': f'Error: {result}'}))
                 response.status_code = 500
