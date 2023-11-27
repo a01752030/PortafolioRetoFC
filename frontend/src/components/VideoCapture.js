@@ -1,170 +1,122 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from '../styles/VideoCapture.module.css';
 
+const VideoCapture = () => {
+  const [stream, setStream] = useState(null);
+  const [recorder, setRecorder] = useState(null);
+  const canvasRef = useRef(null);
+  const videoRef = useRef(null);
 
-function VideoCapture() {
-    const videoRef = useRef(null);
-    const [mediaRecorder, setMediaRecorder] = useState(null);
-    const [recording, setRecording] = useState(false);
-    const [recordingType, setRecordingType] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [notification, setNotification] = useState('');
-
-    async function startCamera() {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoRef.current.srcObject = stream;
-        videoRef.current.play();
-
-        setRecordingType(null); // Reset the recording type
-        setMediaRecorder(null); // Reset the MediaRecorder instance
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setStream(mediaStream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream; // Set the media stream to the video element
+      }
+    } catch (error) {
+      console.error('Error accessing camera:', error);
     }
+  };
 
-    function startRecording(type) {
-        if (videoRef.current.srcObject.active) {
-            const stream = videoRef.current.srcObject;
-            const recorder = new MediaRecorder(stream);
-            let chunks = [];
+  const startRecording = () => {
+    const mediaRecorder = new MediaRecorder(stream);
+    setRecorder(mediaRecorder);
 
-            recorder.ondataavailable = (e) => chunks.push(e.data);
+    const recordedChunks = [];
 
-            recorder.onstop = async () => {
-                const videoBlob = new Blob(chunks, { type: 'video/mp4' });
-                uploadToServer(videoBlob);
-                chunks = [];
-            };
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        recordedChunks.push(event.data);
+      }
+    };
 
-            setMediaRecorder(recorder);
-            recorder.start();
-            setRecording(true);
-            setRecordingType(type);
-        } else {
-            console.error('MediaStream is inactive. Cannot start recording.');
-        }
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const formData = new FormData();
+      formData.append('video', blob, 'recorded-video.webm');
+
+
+      fetch('http://localhost:5000/upload-assistance', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Video uploaded successfully');
+          } else {
+            console.error('Error uploading video:', response.statusText);
+          }
+        })
+        .catch(error => console.error('Error uploading video:', error));
+    };
+
+    mediaRecorder.start();
+  };
+
+  const stopRecording = () => {
+    if (recorder) {
+      recorder.stop();
     }
-    
-    
-    function stopRecording() {
-        if (mediaRecorder && recording) {
-            mediaRecorder.stop();
-            setRecording(false);
+  };
 
-            if (recordingType === 'main') {
-                uploadToServer();
-                runMainVideo();
-                startRecording('partici');
-            } else if (recordingType === 'partici') {
-                console.log("HOla")
-                setMediaRecorder(null);
-                uploadParticiToServer();
-                runParticiVideo();
-            }
-        }
-    }
-    
-    
-    
-    
-    async function uploadToServer(videoBlob) {
-        try {
-            const formData = new FormData();
-            formData.append('video', videoBlob);
-    
-            const response = await fetch('http://localhost:5000/upload-video', {
-                method: 'POST',
-                body: formData
-            });
-    
-            const result = await response.json();
-            console.log(result.message);
-        } catch (error) {
-            console.error('Error uploading video:', error);
-        }
-    }
+  const startRecordingAgain = () => {
+    const mediaRecorder = new MediaRecorder(stream);
+    setRecorder(mediaRecorder);
 
-    async function runMainVideo() {
-        setLoading(true);
-        setNotification('Procesando su video...');
-        try {
-            const response = await fetch('http://localhost:5000/run-main-video', {
-                method: 'GET'
-            });
-            const result = await response.json();
-            console.log(result.message);
-            setLoading(false);
-            if (result.message === "Script executed successfully") {
-                setNotification('Los datos de los alumnos se han actualizado con exito!');
-            } else {
-                setNotification('Hubo un error en la ejecución del código, cheque su consola.');
-            }
-        } catch (error) {
-            setLoading(false);
-            console.error('Error:', error);
-            setNotification('Hubo un error en la ejecución del código, cheque su consola.');
-        }
-    }
-    async function runParticiVideo() {
-        setLoading(true);
-        setNotification('Procesando su video para participación...');
-        try {
-            const response = await fetch('http://localhost:5000/run-partici-video', {
-                method: 'GET'
-            });
-            const result = await response.json();
-            console.log(result.message);
-            setLoading(false);
-            if (result.message === "Script executed successfully") {
-                setNotification('El video para participación se ha procesado con éxito!');
-            } else {
-                setNotification('Hubo un error en la ejecución del código, cheque su consola.');
-            }
-        } catch (error) {
-            setLoading(false);
-            console.error('Error:', error);
-            setNotification('Hubo un error en la ejecución del código, cheque su consola.');
-        }
-    }
-    
-    async function uploadParticiToServer(videoBlob) {
-        try {
-            const formData = new FormData();
-            formData.append('video', videoBlob);
+    const recordedChunks = [];
 
-            const response = await fetch('http://localhost:5000/upload-parti', {
-                method: 'POST',
-                body: formData
-            });
+    mediaRecorder.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        recordedChunks.push(event.data);
+      }
+    };
 
-            const result = await response.json();
-            console.log(result.message);
-        } catch (error) {
-            console.error('Error uploading participation video:', error);
-        }
-    }
+    mediaRecorder.onstop = () => {
+      const blob = new Blob(recordedChunks, { type: 'video/webm' });
+      const formData = new FormData();
+      formData.append('video', blob, 'recorded-video.webm');
 
-    return (
-        <div className={styles.container}>
-            <div className={styles.videoContainer}>
-                <div className={styles.videoWrapper}>
-                    <video ref={videoRef} className={styles.video}></video>
-                </div>
-            </div>
-            <div className={styles.buttonContainer}>
-                <button className={styles.button} onClick={startCamera}>
-                    Comenzar camara
-                </button>
-                <button className={styles.button} onClick={() => startRecording('main')}>
-                    Empezar grabación de asistencia
-                </button>
-                <button className={styles.button} onClick={stopRecording}>
-                    Empezar grabación de clase
-                </button>
-                <button className={styles.button} onClick={stopRecording}>
-                    Terminar la clase
-                </button>
-                <p className={styles.notification}>{notification}</p>
-            </div>
+
+      fetch('http://localhost:5000/upload-parti', {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (response.ok) {
+            console.log('Video uploaded successfully');
+          } else {
+            console.error('Error uploading video:', response.statusText);
+          }
+        })
+        .catch(error => console.error('Error uploading video:', error));
+    };
+    mediaRecorder.start();
+};
+
+
+return (
+    <div>
+        <h1>Centro de grabación de clase</h1>
+        <p>Siga los botones para poder tomar asistencia y registrar participaciones</p>
+        <p>La asistencia y la participación pueden demorar 2 minutos en aparecer en la parte de "estadísticas"</p>
+    <div className={styles['video-capture-container']}>
+      <div className={styles['video-container']}>
+        <div className={styles['video-wrapper']}>
+          <video ref={videoRef} className={styles['video']} autoPlay />
         </div>
-    );
-}
+        <canvas ref={canvasRef} width="400" height="300" style={{ display: 'none' }} />
+      </div>
+      <div className={styles['button-container']}>
+        <button className={styles['button']} onClick={startCamera}>Abrir camara</button>
+        <button className={styles['button']} onClick={startRecording}>Tomar asistencias</button>
+        <button className={styles['button']} onClick={stopRecording}>Terminar asistencias</button>
+        <button className={styles['button']} onClick={startRecordingAgain}>Empezar clase</button>
+        <button className={styles['button']} onClick={stopRecording}>Terminar clase</button>
+      </div>
+    </div>
+    </div>
+  );
+};
 
 export default VideoCapture;

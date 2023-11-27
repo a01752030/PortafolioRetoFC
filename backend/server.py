@@ -1,26 +1,20 @@
-from flask import Flask, request, jsonify, make_response,send_file
+from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 import base64
 import os
 from werkzeug.utils import secure_filename
-from dotenv import load_dotenv
 from faceRecon.mainVideo import process_video
-from faceRecon.process_participations import delayed_success
-import json
+from faceRecon.detection import process_video_and_detect_faces
 from graphs import generate_heatmap,generate_bubble_chart,generate_pie_chart,generate_class_specific_bar_chart,generate_class_participation_box_plot, generate_student_ranking_bar_graph, generate_student_attendance_bar_chart
 
 
-load_dotenv()
 app = Flask(__name__)
 CORS(app, origins='*')
 
-with open("random_graph.json", "r") as json_file:
-    graph_data = json.load(json_file)
-
 
 # Configure MongoDB
-app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
+app.config["MONGO_URI"] = "mongodb://localhost:27017/fcRecog"
 mongo = PyMongo(app)
 
 
@@ -143,7 +137,7 @@ def get_students_route():
 
     return jsonify(students)
 
-@app.route('/upload-video', methods=['POST', 'OPTIONS'])
+@app.route('/upload-assistance', methods=['POST', 'OPTIONS'])
 def upload_video_route():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'CORS preflight request successful'})
@@ -162,7 +156,22 @@ def upload_video_route():
 
         response = jsonify(message="Video uploaded successfully")
         print("Video cool")
-        response.status_code = 200
+        try:
+            result = process_video()
+
+        # If the script runs successfully
+            if result == "success":
+                response = make_response(jsonify({'message': 'Script executed successfully'}))
+                response.status_code = 200
+            else:
+                response = make_response(jsonify({'message': f'Error: {result}'}))
+                response.status_code = 500
+        except Exception as e:
+            response = make_response(jsonify({'message': f'An error occurred: {e}'}))
+            response.status_code = 500
+
+
+    
 
     # Set CORS headers
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -189,7 +198,21 @@ def upload_parti_route():
         video_file.save(video_path)
 
         response = jsonify(message="Video uploaded successfully")
-        response.status_code = 200
+        print("Video ok")        
+        try:
+            result = process_video_and_detect_faces()
+
+        # If the script runs successfully
+            if result == "success":
+                response = make_response(jsonify({'message': 'Script executed successfully'}))
+                response.status_code = 200
+            else:
+                response = make_response(jsonify({'message': f'Error: {result}'}))
+                response.status_code = 500
+        except Exception as e:
+            response = make_response(jsonify({'message': f'An error occurred: {e}'}))
+            response.status_code = 500
+
 
     # Set CORS headers
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -222,10 +245,10 @@ def run_main_video_route():
 
     return response
 
-@app.route('/run-partici-video', methods=['GET'])
-def run_partici_video_route():
+@app.route('/run_parti_video', methods=['GET'])
+def run_parti_video_route():
     try:
-        result = delayed_success()
+        result = process_video_and_detect_faces()
 
         # If the script runs successfully
         if result == "success":
@@ -244,7 +267,6 @@ def run_partici_video_route():
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 
     return response
-
 
 @app.route('/login', methods=['POST'])
 def login_route():

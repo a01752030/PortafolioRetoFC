@@ -23,12 +23,13 @@ def process_video():
             # Load the image file
             face_image = face_recognition.load_image_file(os.path.join(known_faces_dir, filename))
             # Extract face encodings from the image
-            face_encoding = face_recognition.face_encodings(face_image)[0]
-            # Extract the label (person's name) from the filename
-            label = os.path.splitext(filename)[0]
-            # Add the face encoding and label to the lists
-            known_face_encodings.append(face_encoding)
-            known_face_labels.append(label)
+            face_encodings = face_recognition.face_encodings(face_image)
+            if face_encodings:  # Check if there are face encodings
+                known_face_encodings.append(face_encodings[0])  # Use the first face encoding
+                # Extract the label (person's name) from the filename
+                label = os.path.splitext(filename)[0]
+                # Add the face encoding and label to the lists
+                known_face_labels.append(label)
 
     # Function to recognize faces in the frame
     def recognize_faces(frame, known_face_encodings, known_face_labels, recognized_names):
@@ -41,6 +42,7 @@ def process_video():
                 first_match_index = matches.index(True)
                 name = known_face_labels[first_match_index]
             if name not in recognized_names:
+                print(name)
                 recognized_names.add(name)
                 students_collection.update_one({"nombre_del_alumno": name}, {"$inc": {"asistencias": 1}})
         return recognized_names
