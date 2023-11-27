@@ -14,6 +14,7 @@ https://drive.google.com/file/d/17LIJGcTB8zubjh3uXTO4JRQ59mKUDckm/view?usp=shari
 * Entrar a  "https://main.dg4xf9dmaefhh.amplifyapp.com/"
 
 # COMO CORRER EL PROGRAMA LOCALMENTE
+Para correr el programa localmente se requiere una BD en mongo con una colección "FCRecog"
 * Clonar repositorio
 * Abrir 2 terminales. Una situarla en "GitHub\PortafolioRetoFC\backend" y otra en "GitHub\PortafolioRetoFC\frontend"
 * Correr "python server.py" y "npm start" en las respectivas consolas
