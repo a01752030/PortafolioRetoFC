@@ -50,7 +50,7 @@ const VideoCapture = () => {
       const formData = new FormData();
       formData.append('video', blob, 'recorded-video.webm');
 
-      fetch('https://9cfb-201-162-161-213.ngrok.io/upload-assistance', {
+      fetch('http://localhost:5000/upload-assistance', {
         method: 'POST',
         body: formData,
       })
@@ -92,7 +92,7 @@ const VideoCapture = () => {
       const formData = new FormData();
       formData.append('video', blob, 'recorded-video.webm');
 
-      fetch('https://9cfb-201-162-161-213.ngrok.io/upload-parti', {
+      fetch('http://localhost:5000/upload-parti', {
         method: 'POST',
         body: formData,
       })
