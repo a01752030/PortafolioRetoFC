@@ -155,13 +155,13 @@ def upload_video_route():
 
         video_file.save(video_path)
 
-        print("Video cool")
+        print("Video ok")        
         try:
             result = process_video()
 
         # If the script runs successfully
             if result == "success":
-                response = jsonify(message="Asistencia actualizada")
+                response = jsonify(message="Participaciones actualizadas")
                 response.status_code = 200
                 return response
             else:
@@ -172,14 +172,13 @@ def upload_video_route():
             response.status_code = 500
 
 
-    
-
     # Set CORS headers
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Methods', 'POST, OPTIONS')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
 
     return response
+
 
 @app.route('/upload-parti', methods=['POST', 'OPTIONS'])
 def upload_parti_route():

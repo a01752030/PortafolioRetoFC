@@ -36,7 +36,7 @@ const HomePage = () => {
 
       {/* Video Tutorial Link */}
 
-        <a href="https://www.youtube.com/watch?v=3vz1P9-dwXQ" target="_blank" rel="noopener noreferrer">
+        <a href="https://youtu.be/QAmuV5ITtFY" target="_blank" rel="noopener noreferrer">
           <FaYoutube size={40} />
         </a>
     </div>
