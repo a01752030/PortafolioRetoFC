@@ -24,3 +24,4 @@ Para correr el programa localmente se requiere una BD en mongo con una colecció
 * Entrar a "http://localhost:3000"
 
 # CAMBIOS A LOS ENTREGABLES DE DOCUMENTACIÓN DEL RETO
+* Entrar a la carpeta de documentación, en ese readme se encuentran las secciones con los cambios
