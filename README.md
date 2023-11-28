@@ -1,3 +1,5 @@
+### El reporte final se encuentra en la carpeta de "documentación" 
+
 ### Videos demo
 
 * Video mostrando funcionamiento ultima entrega (27/11/2023):
