@@ -8,7 +8,7 @@
 7. **Reto Evaluacion.pdf**
 8. **Reto Privacidad y Seguridad de los datos.pdf**
 
-# Final
+# Final (Cambios a los entregables de retroalimentación)
 1. **Reto_Metodología.pdf:** Cambiamos el formato e integrar todos los entregables en uno solo. Hicimos un diagrama de Gantt con las aportaciones de cada miembro del equipo. Y agregamos las citas de las tecnologías usadas.
 2. **Reto_Datos.pdf:** Sin cambios
 3. **Reto Privacidad y Seguridad de los Datos.pdf:** Sin cambios 
